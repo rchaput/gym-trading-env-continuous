@@ -78,7 +78,6 @@ class TradingEnv(gym.Env):
     metadata = {'render_modes': ['logs']}
     def __init__(self,
                 df : pd.DataFrame,
-                positions : list = [0, 1],
                 dynamic_feature_functions = [dynamic_feature_last_position_taken, dynamic_feature_real_position],
                 reward_function = basic_reward_function,
                 windows = None,
@@ -95,7 +94,6 @@ class TradingEnv(gym.Env):
         self.name = name
         self.verbose = verbose
 
-        self.positions = positions
         self.dynamic_feature_functions = dynamic_feature_functions
         self.reward_function = reward_function
         self.windows = windows
@@ -103,13 +101,13 @@ class TradingEnv(gym.Env):
         self.borrow_interest_rate = borrow_interest_rate
         self.portfolio_initial_value = float(portfolio_initial_value)
         self.initial_position = initial_position
-        assert self.initial_position in self.positions or self.initial_position == 'random', "The 'initial_position' parameter must be 'random' or a position mentionned in the 'position' (default is [0, 1]) parameter."
+        assert self.initial_position == 'random' or 0.0 <= self.initial_position <= 1.0, "The 'initial_position' parameter must be 'random' or a floating value in [0,1]."
         assert render_mode is None or render_mode in self.metadata["render_modes"]
         self.max_episode_duration = max_episode_duration
         self.render_mode = render_mode
         self._set_df(df)
         
-        self.action_space = spaces.Discrete(len(positions))
+        self.action_space = spaces.Box(-np.inf, np.inf, shape=(1,))
         self.observation_space = spaces.Box(
             -np.inf,
             np.inf,
@@ -164,7 +162,7 @@ class TradingEnv(gym.Env):
         super().reset(seed = seed, options = options, **kwargs)
         
         self._step = 0
-        self._position = np.random.choice(self.positions) if self.initial_position == 'random' else self.initial_position
+        self._position = np.random.random() if self.initial_position == 'random' else self.initial_position
         self._limit_orders = {}
         
 
@@ -187,7 +185,6 @@ class TradingEnv(gym.Env):
             idx = self._idx,
             step = self._step,
             date = self.df.index.values[self._idx],
-            position_index =self.positions.index(self._position),
             position = self._position,
             real_position = self._position,
             data =  dict(zip(self._info_columns, self._info_array[self._idx])),
@@ -230,8 +227,8 @@ class TradingEnv(gym.Env):
             'persistent': persistent
         }
     
-    def step(self, position_index = None):
-        if position_index is not None: self._take_action(self.positions[position_index])
+    def step(self, position = None):
+        if position is not None: self._take_action(position)
         self._idx += 1
         self._step += 1
 
@@ -254,7 +251,6 @@ class TradingEnv(gym.Env):
             idx = self._idx,
             step = self._step,
             date = self.df.index.values[self._idx],
-            position_index =position_index,
             position = self._position,
             real_position = self._portfolio.real_position(price),
             data =  dict(zip(self._info_columns, self._info_array[self._idx])),
