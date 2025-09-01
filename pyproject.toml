@@ -3,13 +3,14 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gym-trading-env"
-version = "0.3.2"
+name = "gym-trading-env-continuous"
+version = "1.0.0"
 license = {file = "LICENSE.txt"}
 authors = [
+  { name = "Remy Chaput", email = "rchaput.pro@gmail.com" },
   { name="Clement Perroud", email="clement.perroud.pro@gmail.com" },
 ]
-description = "A simple, easy, customizable Open IA Gym environments for trading."
+description = "A simple, easy, customizable Gymnasium environment for trading."
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
@@ -20,5 +21,5 @@ classifiers = [
 dependencies = ["pandas>=1.5.3", "numpy>=1.21.1", "gymnasium>=0.28.1", "flask>=2.2.3", "pyecharts>=2.0.2", "ccxt==3.0.59", "nest_asyncio"]
 
 [project.urls]
-"Homepage" = "https://github.com/ClementPerroud/Gym-Trading-Env"
-"Bug Tracker" = "https://github.com/ClementPerroud/Gym-Trading-Env/issues"
+"Homepage" = "https://github.com/rchaput/gym-trading-env-continuous"
+"Bug Tracker" = "https://github.com/rchaput/gym-trading-env-continuous/issues"
