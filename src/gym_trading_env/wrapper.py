@@ -40,7 +40,7 @@ class DiscreteActionsWrapper(gym.Wrapper):
             The info dict is modified to also include the position_index, as
             was done previously in gym-trading-env.
         """
-        assert isinstance(position_index, int), "position_index must be an int"
+        assert isinstance(position_index, (int, np.integer)), "position_index must be an int"
         assert 0 <= position_index <= len(self.positions), "position_index must be in [0, #positions]"
 
         position = self.positions[position_index]
