@@ -27,6 +27,11 @@
 Gym Trading Env is an Gymnasium environment for simulating stocks and training Reinforcement Learning (RL) trading agents.
 It was designed to be fast and customizable for easy RL trading algorithms implementation.
 
+*Gym Trading Env Continuous* is a fork that uses continuous actions by default;
+it includes a wrapper that allows using discrete actions exactly as in the
+original Gym Trading Env. Everything else should work the same, and the original
+documentation should be useful as well.
+
 
 | [Documentation](https://gym-trading-env.readthedocs.io/en/latest/index.html) |
 
@@ -49,13 +54,13 @@ Installation
 Gym Trading Env supports Python 3.9+ on Windows, Mac, and Linux. You can install it using pip:
 
 ```bash
-pip install gym-trading-env
+pip install gym-trading-env-continuous
 ```
 
 Or using git :
 
 ```bash
-git clone https://github.com/ClementPerroud/Gym-Trading-Env
+git clone https://github.com/rchaput/gym-trading-env-continuous
 ```
 
 
