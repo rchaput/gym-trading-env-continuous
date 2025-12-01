@@ -62,6 +62,9 @@ class TradingEnv(gym.Env):
     :param portfolio_initial_value: Initial valuation of the portfolio.
     :type portfolio_initial_value: float or int
 
+    :param position_range: The allowed bounds for the position (continuous value). This serves more as an indication to the RL algorithm rather than a strict limit. Submitting an action outside these bounds should still work. Change this parameter to change the allowed actions that the RL algorithm will produce.
+    :type: optional - tuple of 2 floats or ints
+
     :param initial_position: You can specify the initial position of the environment or set it to 'random'. It must contained in the list parameter 'positions'.
     :type initial_position: optional - float or int
 
@@ -84,6 +87,7 @@ class TradingEnv(gym.Env):
                 trading_fees = 0,
                 borrow_interest_rate = 0,
                 portfolio_initial_value = 1000,
+                position_range=(-1, +2),
                 initial_position ='random',
                 max_episode_duration = 'max',
                 verbose = 1,
@@ -107,7 +111,7 @@ class TradingEnv(gym.Env):
         self.render_mode = render_mode
         self._set_df(df)
         
-        self.action_space = spaces.Box(-np.inf, np.inf, shape=(1,))
+        self.action_space = spaces.Box(*position_range, shape=(1,))
         self.observation_space = spaces.Box(
             -np.inf,
             np.inf,
