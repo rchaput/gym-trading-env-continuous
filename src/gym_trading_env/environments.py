@@ -209,6 +209,11 @@ class TradingEnv(gym.Env):
         return
 
     def _take_action(self, position):
+        if isinstance(position, np.ndarray):
+            # Because the action space is a Box of shape (1,), the action might
+            # be a ndarray with a single element. In such cases, we take the
+            # element itself rather than the array.
+            position = position[0]
         if position != self._position:
             self._trade(position)
     

@@ -46,7 +46,7 @@ class DiscreteActionsWrapper(gym.Wrapper):
 
         position = self.positions[position_index]
         obs, reward, terminated, truncated, _ = self.env.step(position)
-        self.unwrapped.historical_info['position_index', -1] = position_index  # FIXME
+        self.unwrapped.historical_info['position_index', -1] = position_index
         info = self.unwrapped.historical_info[-1]
 
         return obs, reward, terminated, truncated, info
