@@ -218,6 +218,11 @@ class TradingEnv(gym.Env):
             # be a ndarray with a single element. In such cases, we take the
             # element itself rather than the array.
             position = position[0]
+        if isinstance(position, np.floating):
+            # The gym-trading-env prefers handling Python floats rather than
+            # NumPy floats (particularly when rendering). So we convert them.
+            # Note that the position can be a ndarray of NumPy floats...
+            position = position.item()
         if position != self._position:
             self._trade(position)
     
